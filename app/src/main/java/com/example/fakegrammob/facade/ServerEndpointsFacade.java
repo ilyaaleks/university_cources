@@ -23,12 +23,18 @@ import lombok.NoArgsConstructor;
 
 import static com.example.fakegrammob.facade.ServerEndpoints.ADD_POST_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.AUTH_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.COUNT_OF_LIKES_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.GET_POST_BY_ID_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.POST_COMMENTS_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.REGISTRATION_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.SAVE_LIKE_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.SAVE_POST_COMMENTS_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.SUBSCRIBE_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.SUBSCRIPTION_POSTS_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.UNSUBSCRIBE_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.USER_BY_ID_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.USER_BY_USERNAME_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.USER_POSTS_URL;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ServerEndpointsFacade {
@@ -41,6 +47,15 @@ public class ServerEndpointsFacade {
         return response.getResult();
     }
 
+    public static UserDto getUserById(final Long userId) {
+        final ANResponse<UserDto> response = AndroidNetworking.get(USER_BY_ID_URL.replace("{userId}", userId.toString()))
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(UserDto.class);
+        return response.getResult();
+    }
+
     public static AuthToken doRegistration(final UserDto user) {
         final ANResponse<AuthToken> response = AndroidNetworking.post(REGISTRATION_URL)
                 .addApplicationJsonBody(user)
@@ -49,13 +64,36 @@ public class ServerEndpointsFacade {
         return response.getResult();
     }
 
-    public static PostPageDto getContent(final Integer page, final ProgressBar progressBar, final Long userId) {
+    public static PostPageDto getUserPosts(final Integer page, final Long userId) {
+        final ANResponse<PostPageDto> response = AndroidNetworking.get(USER_POSTS_URL.replace("{page}", page.toString()).replace("{userId}", userId.toString()))
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(PostPageDto.class);
+        return response.getResult();
+    }
+
+    public static PostPageDto getUserPosts(final Integer page, final ProgressBar progressBar, final Long userId) {
+        progressBar.setVisibility(View.GONE);
+        return getUserPosts(page, userId);
+    }
+
+    public static PostPageDto getSubscriptionPosts(final Integer page, final ProgressBar progressBar, final Long userId) {
         final ANResponse<PostPageDto> response = AndroidNetworking.get(SUBSCRIPTION_POSTS_URL.replace("{page}", page.toString()).replace("{userId}", userId.toString()))
                 .setTag("test")
                 .setPriority(Priority.LOW)
                 .build()
                 .executeForObject(PostPageDto.class);
         progressBar.setVisibility(View.GONE);
+        return response.getResult();
+    }
+
+    public static MarkDto getCountOfLike(final Long postId, final Long userId) {
+        final ANResponse<MarkDto> response = AndroidNetworking.get(COUNT_OF_LIKES_URL.replace("{postId}", postId.toString()).replace("{userId}", userId.toString()))
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(MarkDto.class);
         return response.getResult();
     }
 
@@ -100,6 +138,29 @@ public class ServerEndpointsFacade {
                 .addApplicationJsonBody(markDto)
                 .setPriority(Priority.MEDIUM)
                 .build().executeForObject(MarkDto.class);
+        return response.getResult();
+    }
+    public static UserDto getUserByUsername(final String username) {
+        final ANResponse<UserDto> response = AndroidNetworking.get(USER_BY_USERNAME_URL.replace("{username}", username))
+                .setPriority(Priority.MEDIUM)
+                .build().executeForObject(UserDto.class);
+        return response.getResult();
+    }
+
+    public static UserDto subscribeOnUser(final Long userId) {
+        final ANResponse<UserDto> response = AndroidNetworking.get(SUBSCRIBE_URL.replace("{userId}", userId.toString()))
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(UserDto.class);
+        return response.getResult();
+    }
+    public static UserDto unsubscribeFromUser(final Long userId) {
+        final ANResponse<UserDto> response = AndroidNetworking.get(UNSUBSCRIBE_URL.replace("{userId}", userId.toString()))
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(UserDto.class);
         return response.getResult();
     }
 }

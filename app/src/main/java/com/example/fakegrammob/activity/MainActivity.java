@@ -20,6 +20,8 @@ import com.example.fakegrammob.facade.ServerEndpointsFacade;
 import com.example.fakegrammob.service.FingerPrintService;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 
 import static com.example.fakegrammob.facade.AlertDialogFacade.showErrorDialog;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .addNetworkInterceptor(new AuthInterceptor(getApplicationContext()))
+                .readTimeout(120, TimeUnit.SECONDS)
+                . writeTimeout(120, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);

@@ -2,6 +2,7 @@ package com.example.fakegrammob.auth;
 
 import android.content.Context;
 
+import com.auth0.android.jwt.JWT;
 import com.example.fakegrammob.R;
 
 import java.io.IOException;
@@ -26,7 +27,8 @@ public class AuthInterceptor implements Interceptor {
         Request newRequest;
         final String token = context.getSharedPreferences(
                 context.getString(R.string.auth_token_bearer), Context.MODE_PRIVATE).getString(context.getString(R.string.auth_token_bearer), "");
-        if (token.equals("")) {
+        JWT jwtToken=new JWT(token);
+        if (token.equals("")||jwtToken.isExpired(0)) {
             return chain.proceed(request);
         }
         newRequest = request.newBuilder()

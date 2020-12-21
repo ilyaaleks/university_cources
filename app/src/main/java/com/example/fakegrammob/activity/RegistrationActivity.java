@@ -49,7 +49,8 @@ public class RegistrationActivity extends AppCompatActivity {
             showErrorDialog();
             return;
         }
-        UserDto user = new UserDto(lastName, name, username,password, email, userDescription, false, status);
+        UserDto user = new UserDto(lastName, name, username, email, userDescription, false, status);
+        user.setPassword(password);
         doRegistration(user);
         this.finish();
     }

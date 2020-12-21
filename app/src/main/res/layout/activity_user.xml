@@ -6,43 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserActivity">
 
-    <ImageView
-        android:id="@+id/postView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="40dp"
+    <com.androidnetworking.widget.ANImageView
+        android:id="@+id/userAvatarView"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/postText"
+        android:id="@+id/userDetatil"
         android:layout_width="192dp"
         android:layout_height="51dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="28dp"
         android:text="TextView"
         android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/userDescription"
+        android:layout_width="192dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="28dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="411dp"
         android:layout_height="556dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="19dp"
         android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postView">
+        app:layout_constraintTop_toBottomOf="@+id/subscribe_unsubscribe_button">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/list_row_main" />
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/list_row_main" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/subscribe_unsubscribe_button"
+        android:layout_width="185dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="51dp"
+        android:onClick="subscribeOnUserEvent"
+        android:text="@string/subscribe"
+        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.845"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/userDescription"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

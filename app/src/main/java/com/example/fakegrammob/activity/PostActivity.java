@@ -25,6 +25,7 @@ import java.util.List;
 
 import static com.example.fakegrammob.facade.ClaimRetrieve.retrieveUserIdFromToken;
 import static com.example.fakegrammob.facade.ServerEndpoints.BASE_URL;
+import static com.example.fakegrammob.facade.ServerEndpointsFacade.getCountOfLike;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.getPostById;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.getPostComments;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.saveComment;
@@ -38,6 +39,8 @@ public class PostActivity extends AppCompatActivity implements CommentAdapter.On
     private List<CommentDto> comments = new ArrayList<>();
     private NestedScrollView nestedScrollView;
     private EditText newCommentText;
+    private TextView likeView;
+    private TextView dislikeView;
     private int page = 0;
     private PostDto currentPost;
 
@@ -48,16 +51,22 @@ public class PostActivity extends AppCompatActivity implements CommentAdapter.On
         final long postId = getIntent().getExtras().getLong("postId");
         final PostDto post = getPostById(postId);
         currentPost = post;
-        picture = findViewById(R.id.postView);
-        postText = findViewById(R.id.postText);
+        picture = findViewById(R.id.userAvatarView);
+        postText = findViewById(R.id.userDetatil);
         recyclerView = findViewById(R.id.recycler_view_comments);
         nestedScrollView = findViewById(R.id.scroll_view_comment);
         newCommentText = findViewById(R.id.comment_editor);
+        likeView = findViewById(R.id.likeView);
+        dislikeView = findViewById(R.id.dislikeVIew);
         final String serverUrl = BASE_URL + "img/";
         //with glide maybe, 11.03 in video https://www.youtube.com/watch?v=9r-BoGoZWVs
         picture.setDefaultImageResId(R.drawable.ic_launcher_foreground);
         picture.setErrorImageResId(R.drawable.ic_baseline_error_24);
         picture.setImageUrl(serverUrl + post.getPhotoPath());
+        postText.setText(post.getText());
+        final MarkDto mark = getCountOfLike(post.getId(), post.getAuthorId());
+        likeView.setText(String.valueOf(mark.getCountOfLikes()));
+        dislikeView.setText(String.valueOf(mark.getCountOfDislikes()));
         //init adapter
         commentAdapter = new CommentAdapter(comments, this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

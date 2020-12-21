@@ -8,7 +8,7 @@
     tools:context=".activity.PostActivity">
 
     <com.androidnetworking.widget.ANImageView
-        android:id="@+id/postView"
+        android:id="@+id/userAvatarView"
         android:layout_width="130dp"
         android:layout_height="130dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,14 +16,14 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/postText"
+        android:id="@+id/userDetatil"
         android:layout_width="254dp"
         android:layout_height="81dp"
         android:layout_marginStart="157dp"
         android:text="TextView"
         android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/postView"
+        app:layout_constraintStart_toStartOf="@+id/userAvatarView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -74,24 +74,45 @@
 
     <Button
         android:id="@+id/Like"
-        android:layout_width="76dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="56dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="29dp"
         android:onClick="setLike"
-        android:text="Like"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/postText" />
+        android:text="@string/fa_heart_o"
+        app:layout_constraintStart_toEndOf="@+id/likeView"
+        app:layout_constraintTop_toBottomOf="@+id/userDetatil" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="76dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="58dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="17dp"
         android:onClick="setDislike"
-        android:text="Dislike"
+        android:text="@string/set_dislike"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/Like"
-        app:layout_constraintTop_toTopOf="@+id/postText" />
+        app:layout_constraintTop_toBottomOf="@+id/userDetatil" />
+
+    <TextView
+        android:id="@+id/dislikeVIew"
+        android:layout_width="41dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="36dp"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/Like"
+        app:layout_constraintTop_toBottomOf="@+id/userDetatil" />
+
+    <TextView
+        android:id="@+id/likeView"
+        android:layout_width="49dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="33dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toEndOf="@+id/userAvatarView"
+        app:layout_constraintTop_toBottomOf="@+id/userDetatil" />
 </androidx.constraintlayout.widget.ConstraintLayout>
