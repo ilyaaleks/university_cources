@@ -20,4 +20,6 @@ public class ServerEndpoints {
     public static final String USER_BY_USERNAME_URL = BASE_URL + "api/user?username={username}";
     public static final String SUBSCRIBE_URL = BASE_URL + "api/user/subscribe?userId={userId}";
     public static final String UNSUBSCRIBE_URL = BASE_URL + "api/user/unsubscribe?userId={userId}";
+    public static final String UPDATE_USER_URL = BASE_URL + "api/user";
+    public static final String UPDATE_PHOTO_URL = BASE_URL + "api/user";
 }

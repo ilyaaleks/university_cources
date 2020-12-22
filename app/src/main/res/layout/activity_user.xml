@@ -76,4 +76,15 @@
         app:layout_constraintTop_toTopOf="@+id/userDescription"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="45dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="2dp"
+        android:onClick="updateUser"
+        android:text="@string/settings"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

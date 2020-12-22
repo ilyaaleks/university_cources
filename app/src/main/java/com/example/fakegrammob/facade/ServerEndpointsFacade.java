@@ -10,6 +10,7 @@ import com.androidnetworking.common.Priority;
 import com.example.fakegrammob.dto.AuthToken;
 import com.example.fakegrammob.dto.CommentDto;
 import com.example.fakegrammob.dto.CommentPageDto;
+import com.example.fakegrammob.dto.ImagePath;
 import com.example.fakegrammob.dto.LoginPasswordUser;
 import com.example.fakegrammob.dto.MarkDto;
 import com.example.fakegrammob.dto.PostDto;
@@ -32,6 +33,8 @@ import static com.example.fakegrammob.facade.ServerEndpoints.SAVE_POST_COMMENTS_
 import static com.example.fakegrammob.facade.ServerEndpoints.SUBSCRIBE_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.SUBSCRIPTION_POSTS_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.UNSUBSCRIBE_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.UPDATE_PHOTO_URL;
+import static com.example.fakegrammob.facade.ServerEndpoints.UPDATE_USER_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.USER_BY_ID_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.USER_BY_USERNAME_URL;
 import static com.example.fakegrammob.facade.ServerEndpoints.USER_POSTS_URL;
@@ -161,6 +164,24 @@ public class ServerEndpointsFacade {
                 .setPriority(Priority.LOW)
                 .build()
                 .executeForObject(UserDto.class);
+        return response.getResult();
+    }
+    public static UserDto updateUser(final UserDto user) {
+        final ANResponse<UserDto> response = AndroidNetworking.put(UPDATE_USER_URL)
+                .addApplicationJsonBody(user)
+                .setTag("test")
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(UserDto.class);
+        return response.getResult();
+    }
+    public static ImagePath updateUserPhoto(final String username, final File file) {
+        final ANResponse<ImagePath> response = AndroidNetworking.upload(UPDATE_PHOTO_URL)
+                .addMultipartFile("file", file)
+                .addMultipartParameter("username", String.valueOf(username))
+                .setPriority(Priority.LOW)
+                .build()
+                .executeForObject(ImagePath.class);
         return response.getResult();
     }
 }

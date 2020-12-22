@@ -26,7 +26,6 @@ import static com.example.fakegrammob.facade.ServerEndpoints.BASE_URL;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.getSubscriptionPosts;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.getUserById;
 import static com.example.fakegrammob.facade.ServerEndpointsFacade.getUserByUsername;
-import static com.example.fakegrammob.facade.ServerEndpointsFacade.getUserPosts;
 
 public class StoryActivity extends AppCompatActivity implements MainAdapter.OnItemListener {
     private NestedScrollView nestedScrollView;
@@ -65,7 +64,7 @@ public class StoryActivity extends AppCompatActivity implements MainAdapter.OnIt
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                 page++;
                 progressBar.setVisibility(View.VISIBLE);
-                final PostPageDto content = getUserPosts(page, progressBar, authorId);
+                final PostPageDto content = getSubscriptionPosts(page, progressBar, authorId);
                 mainAdapter = new MainAdapter(content.getPosts(), this, this);
                 recyclerView.setAdapter(mainAdapter);
             }
@@ -95,6 +94,12 @@ public class StoryActivity extends AppCompatActivity implements MainAdapter.OnIt
         final UserDto user = getUserByUsername(username);
         Intent intent = new Intent(this, UserActivity.class);
         intent.putExtra("userId", user.getId());
+        startActivity(intent);
+    }
+
+    public void openAboutUserActivity(View view) {
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra("userId", retrieveUserIdFromToken(this));
         startActivity(intent);
     }
 }

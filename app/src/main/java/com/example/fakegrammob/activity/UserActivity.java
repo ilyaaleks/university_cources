@@ -38,7 +38,9 @@ public class UserActivity extends AppCompatActivity implements MainAdapter.OnIte
     private int page = 0;
     private Button subscribeButton;
     private UserDto user;
+    private Button settingsButton;
     private final String serverUrl = BASE_URL + "img/";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class UserActivity extends AppCompatActivity implements MainAdapter.OnIte
         imageView = findViewById(R.id.userAvatarView);
         usernameView = findViewById(R.id.userDetatil);
         userDescriptionView = findViewById(R.id.userDescription);
+        settingsButton = findViewById(R.id.settings_button);
         final long userId = getIntent().getExtras().getLong("userId");
         final PostPageDto postPageDto = getUserPosts(page, userId);
         if (postPageDto != null) {
@@ -63,6 +66,7 @@ public class UserActivity extends AppCompatActivity implements MainAdapter.OnIte
         subscribeButton = findViewById(R.id.subscribe_unsubscribe_button);
         if (user.getId() == retrieveUserIdFromToken(getApplicationContext())) {
             subscribeButton.setVisibility(View.INVISIBLE);
+            settingsButton.setVisibility(View.VISIBLE);
         }
         if (user.isSubscribed()) {
             subscribeButton.setText("unsubscribe");
@@ -83,8 +87,10 @@ public class UserActivity extends AppCompatActivity implements MainAdapter.OnIte
     public void subscribeOnUserEvent(View view) {
         if (user.isSubscribed()) {
             user = unsubscribeFromUser(user.getId());
+            subscribeButton.setText("subscribe");
         } else {
             user = subscribeOnUser(user.getId());
+            subscribeButton.setText("unsubscribe");
         }
     }
 
@@ -93,6 +99,13 @@ public class UserActivity extends AppCompatActivity implements MainAdapter.OnIte
         Intent intent = new Intent(this, PostActivity.class);
         final PostDto post = posts.get(position);
         intent.putExtra("postId", post.getId());
+        startActivity(intent);
+    }
+
+    public void updateUser(View view) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        intent.putExtra("updateFlag", true);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 }

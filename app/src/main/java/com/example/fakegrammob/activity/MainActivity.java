@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
+import static android.text.TextUtils.isEmpty;
 import static com.example.fakegrammob.facade.AlertDialogFacade.showErrorDialog;
 import static com.example.fakegrammob.validator.StringFieldsValidators.isContainEmptyString;
 
@@ -36,10 +38,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        final String token = getApplicationContext().getSharedPreferences(
+                getApplicationContext().getString(R.string.auth_token_bearer), Context.MODE_PRIVATE).getString(getApplicationContext().getString(R.string.auth_token_bearer), "");
+        if (!isEmpty(token)) {
+            getApplicationContext().getSharedPreferences(
+                    getApplicationContext().getString(R.string.auth_token_bearer), Context.MODE_PRIVATE).edit().clear();
+        }
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .addNetworkInterceptor(new AuthInterceptor(getApplicationContext()))
                 .readTimeout(120, TimeUnit.SECONDS)
-                . writeTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
@@ -64,23 +73,22 @@ public class MainActivity extends AppCompatActivity {
         final String authKey = getString(R.string.auth_token_bearer);
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
                 authKey, Context.MODE_PRIVATE);
-        if (isContainEmptyString(username,password)) {
+        if (isContainEmptyString(username, password)) {
             showErrorDialog();
             return;
         }
         final AuthToken authToken = ServerEndpointsFacade.doLogin(username, password);
-        if(authToken==null)
-        {
+        if (authToken == null) {
             showErrorDialog();
             return;
         }
-        sharedPref.edit().putString(authKey,authToken.getToken());
-        FingerPrintService fingerPrintService=new FingerPrintService(getApplicationContext(),this);
+        sharedPref.edit().putString(authKey, authToken.getToken()).commit();
+        FingerPrintService fingerPrintService = new FingerPrintService(getApplicationContext(), this);
         fingerPrintService.auth();
 
     }
-    public void openRegisterActivity(View view)
-    {
+
+    public void openRegisterActivity(View view) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }

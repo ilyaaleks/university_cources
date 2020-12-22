@@ -27,8 +27,11 @@ public class AuthInterceptor implements Interceptor {
         Request newRequest;
         final String token = context.getSharedPreferences(
                 context.getString(R.string.auth_token_bearer), Context.MODE_PRIVATE).getString(context.getString(R.string.auth_token_bearer), "");
-        JWT jwtToken=new JWT(token);
-        if (token.equals("")||jwtToken.isExpired(0)) {
+        if (token.equals("")) {
+            return chain.proceed(request);
+        }
+        JWT jwtToken = new JWT(token);
+        if (jwtToken.isExpired(0)) {
             return chain.proceed(request);
         }
         newRequest = request.newBuilder()

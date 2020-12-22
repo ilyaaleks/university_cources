@@ -1,6 +1,8 @@
 package com.example.fakegrammob.activity;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.example.fakegrammob.R;
 
@@ -29,6 +32,7 @@ public class PostAddingActivity extends AppCompatActivity {
     private ImageView imageView;
     private EditText hashTags;
     private EditText postText;
+    private Uri currentImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class PostAddingActivity extends AppCompatActivity {
     }
 
 
-    private Uri currentImagePath;
+
 
     public void peekImage(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -77,6 +81,17 @@ public class PostAddingActivity extends AppCompatActivity {
             return;
         }
         savePost(currentPhoto, authorId, hashTags,postText);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("FakeGram")
+                        .setContentText("Post has been added successfully");
+
+        Notification notification = builder.build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notification);
         finish();
     }
 
